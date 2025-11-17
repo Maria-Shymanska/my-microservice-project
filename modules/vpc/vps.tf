@@ -55,7 +55,7 @@ resource "aws_internet_gateway" "igw" {
 # Elastic IP для NAT Gateway
 # -----------------------
 resource "aws_eip" "nat" {
-  vpc = true
+  depends_on = [aws_internet_gateway.igw]
 }
 
 # -----------------------

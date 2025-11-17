@@ -1,3 +1,4 @@
+
 # -----------------------
 # S3 bucket for Terraform state
 # -----------------------
@@ -6,12 +7,12 @@ resource "aws_s3_bucket" "terraform_state" {
 
   tags = {
     Name        = var.bucket_name
-    Environment = "lesson-5"
+    Environment = "lesson-7"
   }
 }
 
 # -----------------------
-# Увімкнення версіювання
+# Enable versioning
 # -----------------------
 resource "aws_s3_bucket_versioning" "versioning" {
   bucket = aws_s3_bucket.terraform_state.id
@@ -22,7 +23,7 @@ resource "aws_s3_bucket_versioning" "versioning" {
 }
 
 # -----------------------
-# Увімкнення шифрування
+# Enable encryption
 # -----------------------
 resource "aws_s3_bucket_server_side_encryption_configuration" "encryption" {
   bucket = aws_s3_bucket.terraform_state.bucket
@@ -35,7 +36,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "encryption" {
 }
 
 # -----------------------
-# Забороняємо публічний доступ
+# Block public access
 # -----------------------
 resource "aws_s3_bucket_public_access_block" "public_access" {
   bucket = aws_s3_bucket.terraform_state.id
@@ -45,3 +46,5 @@ resource "aws_s3_bucket_public_access_block" "public_access" {
   ignore_public_acls      = true
   restrict_public_buckets = true
 }
+
+
