@@ -3,20 +3,20 @@ kind: Deployment
 metadata:
   name: django-app
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
-      app: django
+      app: django-app
   template:
     metadata:
       labels:
-        app: django
+        app: django-app
     spec:
       containers:
-        - name: django
-          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
-          ports:
-            - containerPort: 8000
+        - name: django-app
+          image: your-django-image:latest
           envFrom:
             - configMapRef:
                 name: django-config
+          ports:
+            - containerPort: 8000
