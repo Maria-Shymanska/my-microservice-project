@@ -7,6 +7,7 @@ provider "aws" {
   source      = "./modules/s3-backend"
   bucket_name = "maria-lesson7-terraform-state"
   table_name  = "terraform-locks"
+  environment = "lesson-7"
 }
 
 # Підключаємо модуль VPC
@@ -19,12 +20,12 @@ module "vpc" {
   vpc_name           = "lesson-5-vpc"
 }
 
-# Підключаємо модуль ECR
 module "ecr" {
   source       = "./modules/ecr"
-  ecr_name     = "lesson-5-ecr"
+  ecr_name     = "lesson-7-ecr"   
   scan_on_push = true
 }
+
 
 
 # Модуль EKS (Kubernetes Cluster)

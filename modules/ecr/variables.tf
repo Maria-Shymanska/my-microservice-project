@@ -1,10 +1,11 @@
 variable "ecr_name" {
   description = "Name of the ECR repository"
-  type        = string
+  default     = "lesson-7-django-app"
 }
 
 variable "scan_on_push" {
-  description = "Enable automatic image scanning"
-  type        = bool
+  description = "Enable image scanning on push"
   default     = true
 }
+
+
