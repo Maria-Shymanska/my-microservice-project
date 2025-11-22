@@ -1,22 +1,43 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: django-app
+  name: {{ .Chart.Name }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: django-app
+      app: {{ .Chart.Name }}
   template:
     metadata:
       labels:
-        app: django-app
+        app: {{ .Chart.Name }}
     spec:
       containers:
-        - name: django-app
-          image: your-django-image:latest
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           ports:
-            - containerPort: 8000
-          envFrom:
-            - configMapRef:
-                name: django-config
+            - containerPort: {{ .Values.app.port }}
+          env:
+            - name: DJANGO_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Chart.Name }}-secret
+                  key: DJANGO_SECRET_KEY
+            - name: DJANGO_DEBUG
+              value: "{{ .Values.env.DJANGO_DEBUG }}"
+            - name: DJANGO_ALLOWED_HOSTS
+              value: "{{ .Values.env.DJANGO_ALLOWED_HOSTS }}"
+            - name: POSTGRES_DB
+              value: "{{ .Values.env.POSTGRES_DB }}"
+            - name: POSTGRES_USER
+              value: "{{ .Values.env.POSTGRES_USER }}"
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Chart.Name }}-secret
+                  key: POSTGRES_PASSWORD
+            - name: POSTGRES_HOST
+              value: "{{ .Values.env.POSTGRES_HOST }}"
+            - name: POSTGRES_PORT
+              value: "{{ .Values.env.POSTGRES_PORT }}"
+
