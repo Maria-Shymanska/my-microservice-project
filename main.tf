@@ -3,10 +3,11 @@ provider "aws" {
 }
 
 # Підключаємо модуль S3 та DynamoDB
-module "s3_backend" {
+ module "s3_backend" {
   source      = "./modules/s3-backend"
-  bucket_name = "maria-lesson5-terraform-state"
+  bucket_name = "maria-lesson7-terraform-state"
   table_name  = "terraform-locks"
+  environment = "lesson-7"
 }
 
 # Підключаємо модуль VPC
@@ -19,10 +20,21 @@ module "vpc" {
   vpc_name           = "lesson-5-vpc"
 }
 
-# Підключаємо модуль ECR
 module "ecr" {
   source       = "./modules/ecr"
-  ecr_name     = "lesson-5-ecr"
+  ecr_name     = "lesson-7-ecr"   
   scan_on_push = true
 }
 
+
+
+# Модуль EKS (Kubernetes Cluster)
+
+module "eks" {
+  source       = "./modules/eks"
+  cluster_name = "lesson-7-eks"
+  subnet_ids   = module.vpc.private_subnets
+  tags = {
+    Project = "Lesson7"
+  }
+}

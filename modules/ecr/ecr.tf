@@ -1,5 +1,6 @@
+
 resource "aws_ecr_repository" "this" {
-  name = var.ecr_name
+  name = var.ecr_name 
 
   image_scanning_configuration {
     scan_on_push = var.scan_on_push
@@ -11,11 +12,11 @@ resource "aws_ecr_repository" "this" {
 
   tags = {
     Name        = var.ecr_name
-    Environment = "lesson-5"
+    Environment = "lesson-7"
   }
 }
 
-# Додаємо політику доступу (дозволяє push/pull для власного акаунта)
+# Додаємо політику доступу (push/pull для власного акаунта)
 data "aws_caller_identity" "current" {}
 
 resource "aws_ecr_repository_policy" "policy" {
@@ -49,3 +50,4 @@ resource "aws_ecr_repository_policy" "policy" {
     ]
   })
 }
+
