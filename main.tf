@@ -1,3 +1,21 @@
+terraform {
+  required_version = ">= 1.0"
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = "~> 2.0"
+    }
+    helm = {
+      source  = "hashicorp/helm"
+      version = "~> 2.0"
+    }
+  }
+}
+
 provider "aws" {
   region = "us-east-1"
 }
@@ -26,3 +44,18 @@ module "ecr" {
   scan_on_push = true
 }
 
+module "argo_cd" {
+  source       = "./modules/argo-cd"
+  namespace    = "argocd"
+  chart_version = "5.46.4"
+}
+
+
+module "jenkins" {
+  source       = "./modules/jenkins"
+  cluster_name = module.eks.eks_cluster_name
+
+  providers = {
+    helm = helm
+  }
+}
