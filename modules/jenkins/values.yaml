@@ -29,3 +29,8 @@ controller:
     - configuration-as-code:latest
     - credentials-binding:latest
     - github:latest
+
+    server:
+  service:
+    type: LoadBalancer
+    port: 443

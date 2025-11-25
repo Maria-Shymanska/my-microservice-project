@@ -3,7 +3,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 5.0"
+      version = "~> 6.0"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
@@ -45,17 +45,19 @@ module "ecr" {
 }
 
 module "argo_cd" {
-  source       = "./modules/argo-cd"
-  namespace    = "argocd"
-  chart_version = "5.46.4"
+  source = "./modules/argo_cd"
+
+  namespace      = "argocd"
+  chart_version  = "7.1.0"
 }
+
 
 
 module "jenkins" {
-  source       = "./modules/jenkins"
-  cluster_name = module.eks.eks_cluster_name
-
-  providers = {
-    helm = helm
-  }
+  source          = "./modules/jenkins"
+  kubeconfig_path = "~/.kube/config"      
+  namespace       = "jenkins"
+  chart_version   = "4.5.0"
+  admin_user      = "admin"
 }
+
