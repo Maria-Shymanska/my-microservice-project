@@ -22,24 +22,26 @@ resource "aws_route_table_association" "public_assoc" {
 }
 
 # -----------------------
-# Private Route Table
+# Private Route Table для кожної приватної підмережі
 # -----------------------
 resource "aws_route_table" "private" {
+  count  = length(aws_subnet.private)
   vpc_id = aws_vpc.main.id
 
   route {
     cidr_block     = "0.0.0.0/0"
-    nat_gateway_id = aws_nat_gateway.natgw.id
+    nat_gateway_id = aws_nat_gateway.natgw[count.index % length(aws_nat_gateway.natgw)].id
   }
 
   tags = {
-    Name = "${var.vpc_name}-private-rt"
+    Name = "${var.vpc_name}-private-rt-${count.index + 1}"
   }
 }
 
-# Прив'язуємо private route table до приватних підмереж
+# Асоціація private route table з приватною підмережею
 resource "aws_route_table_association" "private_assoc" {
   count          = length(aws_subnet.private)
   subnet_id      = aws_subnet.private[count.index].id
-  route_table_id = aws_route_table.private.id
+  route_table_id = aws_route_table.private[count.index].id
 }
+

@@ -27,3 +27,19 @@ variable "namespace" {
   default     = "jenkins"
 }
 
+variable "cluster_name" {
+  description = "EKS cluster name"
+  type        = string
+}
+
+variable "oidc_provider_arn" {
+  description = "ARN of the IAM OIDC provider"
+  type        = string
+}
+
+variable "oidc_provider_url" {
+  description = "URL of the IAM OIDC provider"
+  type        = string
+}
+
+
