@@ -55,19 +55,12 @@ resource "aws_internet_gateway" "igw" {
 # Elastic IP для NAT Gateway
 # -----------------------
 resource "aws_eip" "nat" {
-  vpc = true
+  count = length(aws_subnet.public)
+  vpc   = true
 }
 
-# -----------------------
-# NAT Gateway (у першій публічній підмережі)
-# -----------------------
-resource "aws_nat_gateway" "natgw" {
-  allocation_id = aws_eip.nat.id
-  subnet_id     = aws_subnet.public[0].id
+# ----
 
-  tags = {
-    Name = "${var.vpc_name}-natgw"
-  }
 
-  depends_on = [aws_internet_gateway.igw]
-}
+
+

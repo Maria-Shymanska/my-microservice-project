@@ -6,7 +6,7 @@ resource "aws_s3_bucket" "terraform_state" {
 
   tags = {
     Name        = var.bucket_name
-    Environment = "lesson-5"
+    Environment = "lesson-8-9"
   }
 }
 
@@ -22,7 +22,7 @@ resource "aws_s3_bucket_versioning" "versioning" {
 }
 
 # -----------------------
-# Увімкнення шифрування
+# Шифрування AES256
 # -----------------------
 resource "aws_s3_bucket_server_side_encryption_configuration" "encryption" {
   bucket = aws_s3_bucket.terraform_state.bucket
@@ -35,7 +35,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "encryption" {
 }
 
 # -----------------------
-# Забороняємо публічний доступ
+# Заборона публічного доступу
 # -----------------------
 resource "aws_s3_bucket_public_access_block" "public_access" {
   bucket = aws_s3_bucket.terraform_state.id
@@ -44,4 +44,18 @@ resource "aws_s3_bucket_public_access_block" "public_access" {
   block_public_policy     = true
   ignore_public_acls      = true
   restrict_public_buckets = true
+}
+
+# -----------------------
+# DynamoDB table for locks
+# -----------------------
+resource "aws_dynamodb_table" "terraform_locks" {
+  name         = var.table_name
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "LockID"
+
+  attribute {
+    name = "LockID"
+    type = "S"
+  }
 }
