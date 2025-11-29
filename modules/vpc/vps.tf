@@ -51,15 +51,7 @@ resource "aws_internet_gateway" "igw" {
   }
 }
 
-# -----------------------
-# Elastic IP для NAT Gateway
-# -----------------------
-resource "aws_eip" "nat" {
-  count = length(aws_subnet.public)
-  vpc   = true
-}
 
-# ----
 
 
 

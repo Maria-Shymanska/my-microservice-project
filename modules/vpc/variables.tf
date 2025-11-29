@@ -29,3 +29,8 @@ variable "vpc_name" {
 }
 
 
+variable "aurora_instance_count" {
+  description = "Кількість реплік Aurora"
+  type        = number
+  default     = 2
+}
