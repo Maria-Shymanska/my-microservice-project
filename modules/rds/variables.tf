@@ -9,8 +9,6 @@ variable "use_aurora" {
   default     = false
 }
 
-
-
 variable "engine" {
   description = "Движок БД для RDS"
   type        = string
@@ -119,15 +117,9 @@ variable "tags" {
   default     = {}
 }
 
-
-variable "aurora_instance_count" {
-  description = "Кількість реплік для Aurora кластеру"
-  type        = number
-  default     = 2
-}
-
 variable "aurora_replica_count" {
   description = "Кількість реплік Aurora для кластера"
   type        = number
   default     = 2
 }
+

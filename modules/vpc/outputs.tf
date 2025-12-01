@@ -1,25 +1,45 @@
-output "vpc_id" {
-  description = "The ID of the VPC"
-  value       = aws_vpc.main.id
+# -----------------------
+# Standard RDS Outputs
+# -----------------------
+output "rds_instance_id" {
+  value       = var.use_aurora ? null : aws_db_instance.standard[0].id
+  description = "Standard RDS instance ID"
 }
 
-output "vpc_name" {
-  description = "The name of the VPC"
-  value       = aws_vpc.main.tags["Name"]
+output "rds_endpoint" {
+  value       = var.use_aurora ? null : aws_db_instance.standard[0].endpoint
+  description = "Standard RDS endpoint"
 }
 
-output "public_subnets" {
-  description = "List of public subnet IDs"
-  value       = aws_subnet.public[*].id
+output "rds_parameter_group_name" {
+  value       = var.use_aurora ? null : aws_db_parameter_group.standard[0].name
+  description = "Standard RDS parameter group name"
 }
 
-output "private_subnets" {
-  description = "List of private subnet IDs"
-  value       = aws_subnet.private[*].id
+# -----------------------
+# Aurora Outputs
+# -----------------------
+output "aurora_cluster_id" {
+  value       = var.use_aurora ? aws_rds_cluster.aurora[0].id : null
+  description = "Aurora cluster ID"
 }
 
-output "nat_gateway_id" {
-  description = "The ID of the NAT Gateway"
-  value       = aws_nat_gateway.natgw.id
+output "aurora_writer_endpoint" {
+  value       = var.use_aurora ? aws_rds_cluster_instance.aurora_writer[0].endpoint : null
+  description = "Aurora writer endpoint"
 }
+
+output "aurora_readers_endpoints" {
+  value       = var.use_aurora ? [for r in aws_rds_cluster_instance.aurora_readers : r.endpoint] : null
+  description = "Aurora reader endpoints"
+}
+
+# -----------------------
+# Unified DB Endpoint (optional)
+# -----------------------
+output "db_main_endpoint" {
+  value       = var.use_aurora ? aws_rds_cluster_instance.aurora_writer[0].endpoint : aws_db_instance.standard[0].endpoint
+  description = "Main database endpoint, works for both RDS and Aurora"
+}
+
 
