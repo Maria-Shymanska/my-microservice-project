@@ -1,11 +1,12 @@
 terraform {
   backend "s3" {
-    bucket         = "maria-lesson5-terraform-state"
-    key            = "lesson-5/terraform.tfstate"
+    bucket         = "maria-finalproject-terraform-state"
+    key            = "final-project/terraform.tfstate"
     region         = "us-east-1"
-    dynamodb_table = "terraform-locks"
-    encrypt        = true
+    dynamodb_table = "maria-finalproject-terraform-lock"
+    use_lockfile = true
   }
 }
+
 
 
