@@ -1,24 +1,31 @@
 variable "vpc_cidr_block" {
-  description = "CIDR block for the VPC"
+  description = "CIDR блок для VPC"
   type        = string
+  default     = "10.0.0.0/16"
 }
 
 variable "public_subnets" {
-  description = "List of public subnet CIDR blocks"
+  description = "Список CIDR блоків для публічних підмереж"
   type        = list(string)
+  default     = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
 }
 
 variable "private_subnets" {
-  description = "List of private subnet CIDR blocks"
+  description = "Список CIDR блоків для приватних підмереж"
   type        = list(string)
+  default     = ["10.0.4.0/24", "10.0.5.0/24", "10.0.6.0/24"]
 }
 
 variable "availability_zones" {
-  description = "List of availability zones"
+  description = "Список зон доступності для підмереж"
   type        = list(string)
+  default     = ["us-east-1a", "us-east-1b", "us-east-1c"]
 }
 
 variable "vpc_name" {
-  description = "Name of the VPC"
+  description = "Назва VPC для тегів"
   type        = string
+  default     = "lesson-8-9-vpc"
 }
+
+
